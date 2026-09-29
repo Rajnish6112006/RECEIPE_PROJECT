@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block start %}
+
+<div class="container mt-4">
+    <h2>Student List</h2>
+
+    <div class="card p-3 mb-4">
+        <h5>Student Statistics</h5>
+        <p>Total Students: {{ stats.total_students }}</p>
+        <p>Average Age: {{ stats.average_age }}</p>
+        <p>Max Age: {{ stats.max_age }}</p>
+        <p>Min Age: {{ stats.min_age }}</p>
+    </div>
+
+    <form method="get" class="d-flex gap-2 mb-3">
+        <input
+            type="search"
+            name="search"
+            class="form-control"
+            placeholder="Search students"
+            value="{{ search_query }}"
+            aria-label="Search students by name, email, age, address, department, or student ID"
+        >
+        <button type="submit" class="btn btn-success">Search</button>
+        {% if search_query %}
+        <a href="{% url 'students' %}" class="btn btn-outline-secondary">Clear</a>
+        {% endif %}
+    </form>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Age</th>
+                <th>Address</th>
+                <th>Department</th>
+                <th>Student ID</th>
+                <th>Results</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.student_name }}</td>
+                <td>{{ student.student_email }}</td>
+                <td>{{ student.student_age }}</td>
+                <td>{{ student.student_address }}</td>
+                <td>{{ student.department.department_name|default:'No Department' }}</td>
+                <td>{{ student.student_id.student_id }}</td>
+                <td><a href="{% url 'student_results' student.id %}" class="btn btn-sm btn-outline-primary">View marks</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">
+                    {% if search_query %}
+                    No students match "{{ search_query }}".
+                    {% else %}
+                    No student data found.
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

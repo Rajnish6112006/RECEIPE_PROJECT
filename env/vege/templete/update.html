@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block start %}
+<div class="card shadow-lg p-4">
+    <h2>Update Recipe</h2>
+    <hr>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input name="receipe_name" value="{{ receipe.receipe_name }}" required class="form-control mb-3">
+        <textarea name="receipe_desc" required class="form-control mb-3">{{ receipe.receipe_desc }}</textarea>
+        <input type="file" name="receipe_image" class="form-control mb-3">
+        <button class="btn btn-success w-100">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

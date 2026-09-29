@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block start %}
+
+<div class="container mt-4">
+    <div class="row g-4">
+        <div class="col-md-5">
+            <div class="card p-4 shadow-sm">
+                <h2 class="mb-3">Add Department</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Create Department</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <h2>Departments</h2>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Department name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for department in departments %}
+                    <tr>
+                        <td>{{ department.department_name }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td class="text-center">No departments found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

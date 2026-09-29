@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block start %}
+
+<div class="container mt-4">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags|default:'info' }}" role="alert">{{ message }}</div>
+    {% endfor %}
+
+    <div class="d-flex justify-content-between align-items-start mb-3">
+        <div>
+            <h2>{{ student.student_name }} - Results</h2>
+            <p class="mb-1"><strong>Rank:</strong> {{ student.rank }}</p>
+            <p class="mb-0"><strong>Total:</strong> {{ student.total_marks }}</p>
+            {% if report_card %}
+            <p class="mb-0"><strong>Result date:</strong> {{ report_card.result_date|date:"F j, Y" }}</p>
+            {% endif %}
+        </div>
+        <a href="{% url 'students' %}" class="btn btn-outline-secondary">Back to students</a>
+    </div>
+
+    <form method="post" class="mb-3">
+        {% csrf_token %}
+        {% if report_card %}
+        <button type="submit" name="send_report" value="1" class="btn btn-outline-primary">Send report by email</button>
+        {% else %}
+        <button type="submit" name="generate_report" value="1" class="btn btn-success">Generate and email report card</button>
+        {% endif %}
+    </form>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Subject</th>
+                <th>Marks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mark in marks %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ mark.subject.subject_name }}</td>
+                <td>{{ mark.marks }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center">No marks recorded for this student.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
